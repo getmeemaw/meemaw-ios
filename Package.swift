@@ -3,22 +3,22 @@
 import PackageDescription
 
 let package = Package(
-    name: "MeemawSDK",
+    name: "meemaw-ios",
     platforms: [
         SupportedPlatform.iOS(.v13),
         SupportedPlatform.macOS(.v11)
     ],
     products: [
         .library(
-            name: "MeemawSDK",
-            targets: ["MeemawSDK"]),
+            name: "meemaw-ios",
+            targets: ["meemaw-ios"]),
     ],
     dependencies: [
         .package(url: "https://github.com/argentlabs/web3.swift", from: "1.1.0")
     ],
     targets: [
         .target(
-            name: "MeemawSDK",
+            name: "meemaw-ios",
             dependencies: [.target(name: "Tsslib"), "web3.swift"]),
         .binaryTarget(
             name: "Tsslib",
