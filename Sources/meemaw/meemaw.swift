@@ -198,8 +198,13 @@ public struct Meemaw {
             dkgResult = try RetrieveWallet(userId: userId)
         } catch WalletStorageError.noWalletStored {
             // 2. If nothing stored : Dkg + store
-            dkgResult = try dkg(auth: auth)
-            try StoreWallet(dkgResult: dkgResult, userId: userId)
+            do {
+                dkgResult = try dkg(auth: auth)
+                try StoreWallet(dkgResult: dkgResult, userId: userId)
+            } catch {
+                print("Error while dkg or storing wallet")
+                throw error
+            }
         } catch {
             print("Other error while retrieving wallet")
             throw error
