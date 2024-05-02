@@ -197,7 +197,13 @@ public struct Meemaw {
         do {
             dkgResult = try RetrieveWallet(userId: userId)
         } catch WalletStorageError.noWalletStored {
-            // 2. If nothing stored : Dkg + store
+            print("No wallet found, creating a new one")
+        } catch {
+            print("Other error while retrieving wallet")
+            throw error
+        }
+
+        // 2. If nothing stored : Dkg + store
             do {
                 dkgResult = try dkg(auth: auth)
                 try StoreWallet(dkgResult: dkgResult, userId: userId)
@@ -205,10 +211,6 @@ public struct Meemaw {
                 print("Error while dkg or storing wallet")
                 throw error
             }
-        } catch {
-            print("Other error while retrieving wallet")
-            throw error
-        }
         
         // 3. return new wallet object with dkgResult (whether from new Dkg or previously stored)
         return Wallet(wallet: dkgResult, address: try GetAddressFromDkgResult(dkgResult: dkgResult), server: self._server, auth: auth)
